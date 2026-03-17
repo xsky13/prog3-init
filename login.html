@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login | Demo Bootstrap</title>
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <style>
+            body {
+                min-height: 100vh;
+                background: radial-gradient(circle at top, #4f46e5 0%, #0f172a 60%);
+                color: #f8fafc;
+            }
+            .card {
+                background: rgba(255, 255, 255, 0.92);
+                border: none;
+            }
+            .card .form-control:focus {
+                box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+            }
+            .fade-in-up {
+                animation: fadeInUp 0.65s ease-out both;
+            }
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translate3d(0, 1.5rem, 0);
+                }
+                to {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+            .link-secondary:hover {
+                color: #4338ca;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="d-flex min-vh-100 align-items-center justify-content-center py-5">
+            <div class="card shadow-lg fade-in-up" style="max-width: 420px; width: 100%;">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary text-white rounded-circle shadow d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span style="font-size: 1.6rem;">🔒</span>
+                        </div>
+                        <h2 class="h4 mt-3 mb-1">Bienvenido</h2>
+                        <p class="text-muted mb-0">Inicia sesión para continuar</p>
+                    </div>
+
+                    <form id="loginForm" novalidate>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Usuario</label>
+                            <div class="input-group">
+                                <span class="input-group-text">👤</span>
+                                <input type="text" class="form-control" id="username" placeholder="ej: juan.perez" required>
+                                <div class="invalid-feedback">Por favor ingresa tu usuario.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <div class="input-group">
+                                <span class="input-group-text">🔑</span>
+                                <input type="password" class="form-control" id="password" placeholder="●●●●●●" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword" aria-label="Mostrar contraseña">👁️</button>
+                                <div class="invalid-feedback">Por favor ingresa tu contraseña.</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Recuérdame</label>
+                            </div>
+                            <a href="#" class="link-secondary small">Olvidé mi contraseña</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100" id="loginBtn">
+                            <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+                            Iniciar sesión
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <small class="text-muted">¿No tienes cuenta? <a href="#" class="text-decoration-none">Regístrate</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
+            <div id="loginToast" class="toast align-items-center text-bg-primary border-0 shadow fade" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">Iniciando sesión...</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        </div>
+
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const loginForm = document.getElementById('loginForm');
+                const loginBtn = document.getElementById('loginBtn');
+                const togglePassword = document.getElementById('togglePassword');
+                const passwordInput = document.getElementById('password');
+                const toastEl = document.getElementById('loginToast');
+                const toast = new bootstrap.Toast(toastEl, { delay: 2500 });
+                const spinner = loginBtn.querySelector('.spinner-border');
+
+                togglePassword.addEventListener('click', () => {
+                    const isMasked = passwordInput.type === 'password';
+                    passwordInput.type = isMasked ? 'text' : 'password';
+                    togglePassword.textContent = isMasked ? '🙈' : '👁️';
+                });
+
+                loginForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    if (!loginForm.checkValidity()) {
+                        loginForm.classList.add('was-validated');
+                        return;
+                    }
+
+                    loginBtn.disabled = true;
+                    spinner.classList.remove('d-none');
+                    toast.show();
+
+                    setTimeout(() => {
+                        toastEl.querySelector('.toast-body').textContent = '¡Bienvenido de nuevo!';
+                        toast.show();
+                        spinner.classList.add('d-none');
+                        loginBtn.disabled = false;
+                    }, 1500);
+                });
+            });
+        </script>
+    </body>
+</html>
